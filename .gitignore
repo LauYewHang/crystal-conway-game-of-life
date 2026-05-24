@@ -1,2 +1,9 @@
+# vs code cache
 .vs/
+.vscode/
+
+# shards' dependencies
 lib/
+
+# compiled executable for testing
+*.exe
