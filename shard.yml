@@ -1,0 +1,15 @@
+name: conway-game-of-life
+version: 0.1.0
+
+authors:
+   - Sunshineツ <yewhang2004@gmail.com>
+
+description: |
+  Conway's game of life in Crystal.
+  Shout out to Noksek for introducing me this Crystal language thingy, you are the cutest ww
+
+# development_dependencies:
+#   webmock:
+#     github: manastech/webmock.cr
+
+# license: MIT
