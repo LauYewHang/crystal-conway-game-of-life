@@ -8,6 +8,10 @@ description: |
   Conway's game of life in Crystal.
   Shout out to Noksek for introducing me this Crystal language thingy, you are the cutest ww
 
+dependencies:
+  crymble-ui:
+    github: wolfgang371/crymbleui
+
 # development_dependencies:
 #   webmock:
 #     github: manastech/webmock.cr
