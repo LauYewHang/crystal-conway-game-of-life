@@ -20,19 +20,20 @@ int MessageBoxPrintf(TCHAR* szCaption, TCHAR* szFormat, ...){
 
 LRESULT CALLBACK WndProc (HWND, UINT, WPARAM, LPARAM);
 
+// WINAPI is a special calling sequence for function calls that occur between Windows and the application (WINAPI is defined as __stdcall)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow){
     static TCHAR szAppName[] = TEXT("Hewwo pookie");
-    HWND hwnd;
-    MSG msg;
-    WNDCLASS wndclass = {
+    HWND hwnd; // handle to a window
+    MSG msg; // message structure
+    WNDCLASS wndclass = { // window class structure
         .style = CS_HREDRAW | CS_VREDRAW,
         .lpfnWndProc = WndProc,
         .cbClsExtra = 0,
         .cbWndExtra = 0,
-        .hInstance = hInstance,
-        .hIcon = LoadIcon(NULL, IDI_APPLICATION),
-        .hCursor = LoadCursor(NULL, IDC_ARROW),
-        .hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH),
+        .hInstance = hInstance, // HINSTANCE: handle to an "instance" of the program itself
+        .hIcon = LoadIcon(NULL, IDI_APPLICATION), // load an icon to display at the program title bar
+        .hCursor = LoadCursor(NULL, IDC_HAND), // load a mouse cursor (style) for the program; the style is something like "Select", "Person", "Unavailable" (refer to your fox cursor folder); it specified how the cursor should be presented in your program
+        .hbrBackground = (HBRUSH) GetStockObject(WHITE_BRUSH), // obtain a graphic object; in this case a brush for painting window's background
         .lpszMenuName = NULL,
         .lpszClassName = szAppName
     };
@@ -43,6 +44,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
         return 0;
     }
 
+    // create a window based on a window class
     hwnd = CreateWindow(
         szAppName,
         TEXT("window time uwu"),
@@ -57,38 +59,40 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
         NULL
     );
 
-    ShowWindow(hwnd, iCmdShow);
-    UpdateWindow(hwnd);
+    ShowWindow(hwnd, iCmdShow); // display the window on the screen
+    UpdateWindow(hwnd); // direct the window to paint itself
 
+    // GetMessage: obtain message from message queue
     while (GetMessage(&msg, NULL, 0, 0)){
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        TranslateMessage(&msg); // translate keyboard message
+        DispatchMessage(&msg); // send message to window procedure
     }
     
     return msg.wParam;
 }
 
+// CALLBACK is a special calling sequence for function calls that occur between Windows and the application (CALLBACK is defined as __stdcall)
 LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
-    HDC hdc;
-    PAINTSTRUCT ps;
-    RECT rect;
+    HDC hdc; // handle to a device context
+    PAINTSTRUCT ps; // paint structure
+    RECT rect; // rectangle structure
 
     switch (message){
         case WM_CREATE:
-            PlaySound(TEXT("konpeko.wav"), NULL, SND_FILENAME | SND_ASYNC);
+            PlaySound(TEXT("konpeko.wav"), NULL, SND_FILENAME | SND_ASYNC); // play a sound file
             return 0;
         
         case WM_PAINT:
-            hdc = BeginPaint(hwnd, &ps);
-            GetClientRect(hwnd, &rect);
-            DrawText(hdc, TEXT("Konpeko~"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
-            EndPaint(hwnd, &ps);
+            hdc = BeginPaint(hwnd, &ps); // initialize the beginning of window painting
+            GetClientRect(hwnd, &rect); // obtain the dimension of the window's client area
+            DrawText(hdc, TEXT("Konpeko~"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER); // display a text string
+            EndPaint(hwnd, &ps); // end window painting
             return 0;
 
         case WM_DESTROY:
-            PostQuitMessage(0);
+            PostQuitMessage(0); // insert a "quit" message into the message queue
             return 0;
     }
 
-    return DefWindowProc(hwnd, message, wParam, lParam);
+    return DefWindowProc(hwnd, message, wParam, lParam); // perform default processing of messages
 }
